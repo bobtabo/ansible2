@@ -1,0 +1,41 @@
+#
+# PHPのインストールおよび設定
+#
+- name: PHPをインストール
+  yum:
+    name: "['php', 'php-devel', 'php-mbstring', 'php-pdo', 'php-gd', 'php-xml', 'php-mcrypt', 'php-mysqlnd', 'php-fpm', 'php-pecl-xdebug', 'php-pecl-zip', 'php-bcmath']"
+    enablerepo: "[remi,remi-php71]"
+    state: installed
+
+- name: PHP-FPM自動起動
+  service:
+    name: php-fpm
+    enabled: yes
+
+- name: XDebug設定
+  lineinfile:
+    dest: /etc/php.ini
+    line: "{{ item }}"
+  with_items:
+    - 'xdebug.remote_enable = On'
+    - 'xdebug.remote_autostart = On'
+    - 'xdebug.remote_connect_back = 1'
+    - 'xdebug.remote_port = 9000'
+    - 'xdebug.scream = 0'
+    - 'xdebug.show_local_vars = 1'
+    - 'xdebug.idekey=PHPSTORM'
+
+- name: PHP-FPM設定
+  lineinfile: 
+    dest: /etc/php-fpm.d/www.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - { regexp: '^user = apache', line: 'user = nginx' }
+    - { regexp: '^group = apache', line: 'group = nginx' }
+    - { regexp: '^listen = 127.0.0.1:9000', line: 'listen = /var/run/php-fpm/php-fpm.sock' }
+    - { regexp: '^;listen.owner = nobody', line: 'listen.owner = nginx' }
+    - { regexp: '^;listen.group = nobody', line: 'listen.group = nginx' }
+    - { regexp: '^;listen.mode = 0660', line: 'listen.mode = 0660' }
+  notify:
+    - restart php-fpm

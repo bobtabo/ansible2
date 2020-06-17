@@ -1,0 +1,22 @@
+#
+# 必須なインストールおよび設定
+#
+- name: yumリポジトリの登録
+  yum:
+    name: ['epel-release', 'http://rpms.famillecollet.com/enterprise/remi-release-7.rpm']
+
+- name: SELinuxのDisable設定
+  selinux:
+    state: disabled
+
+- name: ファイアーウォール無効
+  systemd:
+    name: firewalld
+    state: stopped
+    enabled: false
+
+- name: IPV6無効
+  replace: 
+    dest: /etc/default/grub
+    regexp: 'GRUB_CMDLINE_LINUX="crashkernel=auto spectre_v2=retpoline rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet biosdevname=0 net.ifnames=0"'
+    replace: 'GRUB_CMDLINE_LINUX="ipv6.disable=1 crashkernel=auto spectre_v2=retpoline rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet biosdevname=0 net.ifnames=0"'

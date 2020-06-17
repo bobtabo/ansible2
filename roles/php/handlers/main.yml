@@ -1,0 +1,8 @@
+
+#
+# PHP-FPMの再起動
+#
+- name: restart php-fpm
+  service:
+    name: php-fpm
+    state: restarted

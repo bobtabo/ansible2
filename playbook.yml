@@ -1,0 +1,29 @@
+#
+# Vagrantの設定
+#
+- hosts: all
+  become: yes
+  user: vagrant
+  vars:
+    db_name: hoge
+    db_user: fuga
+    db_password: vagrant#VAGRANT1234
+    db_password_root: vagrant#VAGRANT1234
+    app_name: laravel5
+    app_url: http://hoge.local
+    laravel_home: /home/vagrant/{{ app_name }}
+    ssh_home: /home/vagrant/.ssh
+  roles:
+    - common
+    - php
+    - nginx
+    - mysql
+    - laravel
+  tasks:
+    - name: Nginxが/home/vagrant配下を実行できるように権限変更
+      become: no
+      command: chmod 701 /home/vagrant
+
+    - name: Gitのインストール
+      yum:
+        name: git

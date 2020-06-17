@@ -1,0 +1,41 @@
+#
+# Laravelのインストールおよび設定
+#
+- name: Composerのインストール1
+  become: no
+  shell: curl https://getcomposer.org/installer | php
+
+- name: Composerのインストール2
+  become: yes
+  command: mv -i composer.phar /usr/local/bin/composer
+
+- name: UnZipのインストール
+  become: yes
+  yum:
+    name: unzip
+
+- name: Laravelプロジェクト作成
+  become: no
+  command: composer create-project --prefer-dist laravel/laravel=6.* {{ app_name }}
+
+- name: Laravelパッケージの追加
+  become: no
+  command: |
+    cd "{{ laravel_home }}"
+    composer require --dev barryvdh/laravel-ide-helper
+    composer require --dev squizlabs/php_codesniffer
+
+- name: .env編集
+  become: no
+  lineinfile: 
+    dest: "{{ laravel_home }}/.env"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - { regexp: "^APP_NAME=Laravel", line: "APP_NAME={{ app_name }}" }
+    - { regexp: "^APP_URL=http://localhost", line: "APP_URL={{ app_url }}" }
+    - { regexp: "^DB_DATABASE=laravel", line: "DB_DATABASE={{ db_name }}" }
+    - { regexp: "^DB_USERNAME=root", line: "DB_USERNAME={{ db_user }}" }
+    - { regexp: "^DB_PASSWORD=", line: "DB_PASSWORD={{ db_password }}" }
+  notify:
+    - laravel handler

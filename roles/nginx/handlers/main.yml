@@ -1,0 +1,7 @@
+#
+# Nginxの再起動
+#
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted

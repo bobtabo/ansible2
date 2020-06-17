@@ -1,0 +1,48 @@
+#
+# MySQLのインストールおよび設定
+#
+- name: MariaDBのリポジトリを追加
+  shell: rpm -Uvh https://repo.mysql.com/yum/mysql-5.7-community/el/7/x86_64/mysql57-community
+
+- name: MySQLをインストール
+  yum:
+    enablerepo: "['mysql57-community', 'mysql-community-server']"
+
+- name: MySQLを起動
+  service:
+    name: mysqld
+    state: started
+    enabled: yes
+
+- name: 必須ライブラリをインストール
+  yum:
+    name: MySQL-python
+    state: present
+    enablerepo: epel
+
+- name: MySQLのrootパスワード変更
+  mysql_user:
+    name: 'root'
+    host: "{{ item }}"
+    password: "{{ db_password_root }}"
+  with_items:
+    - 'localhost'
+  template:
+    src: 'templates/my.cnf.j2'
+    dest: '/root/.my.cnf'
+
+- name: DB作成
+  mysql_db:
+    name: ”{{ db_name }}”
+    state: present
+
+- name: ユーザー作成
+  mysql_user:
+    name: ”{{ db_user }}”
+    password: ”{{ db_password }}”
+    priv: '*.*:ALL'
+    state: present
+    host: "{{ item }}"
+  with_items:
+    - '%'
+    - 'localhost'
