@@ -3,7 +3,7 @@
 #
 - name: yumリポジトリの登録
   yum:
-    name: ['epel-release', 'http://rpms.famillecollet.com/enterprise/remi-release-7.rpm']
+    name: "['epel-release', 'http://rpms.famillecollet.com/enterprise/remi-release-7.rpm']"
 
 - name: SELinuxのDisable設定
   selinux:

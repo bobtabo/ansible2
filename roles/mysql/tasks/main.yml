@@ -1,7 +1,7 @@
 #
 # MySQLのインストールおよび設定
 #
-- name: MariaDBのリポジトリを追加
+- name: MySQLのリポジトリを追加
   shell: rpm -Uvh https://repo.mysql.com/yum/mysql-5.7-community/el/7/x86_64/mysql57-community
 
 - name: MySQLをインストール
