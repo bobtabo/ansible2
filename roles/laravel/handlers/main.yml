@@ -26,6 +26,10 @@
     php artisan db:seed
   listen: laravel handler
 
+- name: bootstrap/cache作成
+  become: no
+  shell: mkdir "{{ laravel_home }}"/bootstrap/cache
+
 - name: 権限を変更
   become: no
   shell: |

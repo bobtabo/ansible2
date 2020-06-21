@@ -2,16 +2,12 @@
 # MySQLのインストールおよび設定
 #
 - name: MySQLのリポジトリを追加
-  shell: rpm -Uvh https://repo.mysql.com/yum/mysql-5.7-community/el/7/x86_64/mysql57-community
+  shell: rpm -Uvh https://repo.mysql.com/yum/mysql-5.7-community/el/7/x86_64/mysql57-community-release-el7-10.noarch.rpm
 
 - name: MySQLをインストール
   yum:
-    name: "{{ item }}"
-    state: present
-    with_items:
-      - yum-utils
-      - MySQL-python
-      - mysql-community-server
+    name: yum-utils, MySQL-python, mysql-community-server
+    state: installed
 
 - name: MySQLを起動
   service:
@@ -42,11 +38,13 @@
 - name: DB作成
   mysql_db:
     name: ”{{ db_name }}”
+    login_password: "{{ db_password_root }}"
     state: present
 
 - name: ユーザー作成
   mysql_user:
     name: ”{{ db_user }}”
+    login_password: "{{ db_password_root }}"
     password: ”{{ db_password }}”
     priv: '*.*:ALL'
     state: present

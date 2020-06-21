@@ -16,7 +16,7 @@
 
 - name: Laravelプロジェクト作成
   become: no
-  command: composer create-project --prefer-dist laravel/laravel=6.* {{ app_name }}
+  command: composer create-project --prefer-dist laravel/laravel={{ laravel_version }}.* {{ app_name }}
 
 - name: Laravelパッケージの追加
   become: no

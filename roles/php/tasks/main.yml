@@ -3,22 +3,8 @@
 #
 - name: PHPをインストール
   yum:
-    name: "{{ item }}"
-    enablerepo: remi,remi-php71
+    name: php, php-devel, php-mbstring, php-pdo, php-gd, php-xml, php-mcrypt, php-mysqlnd, php-fpm, php-pecl-xdebug, php-pecl-zip, php-bcmath
     state: installed
-  with_items:
-    - 'php'
-    - 'php-devel'
-    - 'php-mbstring'
-    - 'php-pdo'
-    - 'php-gd'
-    - 'php-xml'
-    - 'php-mcrypt'
-    - 'php-mysqlnd'
-    - 'php-fpm'
-    - 'php-pecl-xdebu'
-    - 'php-pecl-zip'
-    - 'php-bcmath'
 
 - name: PHP-FPM自動起動
   service:

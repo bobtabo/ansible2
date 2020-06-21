@@ -2,10 +2,10 @@
 # 必須なインストールおよび設定
 #
 - name: yumリポジトリの登録
-  yum_repository:
-    name: epel-release
-    description: "epel-release"
-    baseurl: http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
+  shell: yum -y install epel-release
+
+- name: yumパッケージ更新
+  shell: yum -y update
 
 - name: SELinuxのDisable設定
   selinux:

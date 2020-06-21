@@ -9,7 +9,8 @@
     db_user: fuga
     db_password: vagrant#VAGRANT1234
     db_password_root: vagrant#VAGRANT1234
-    app_name: laravel5
+    laravel_version: 5
+    app_name: laravel{{ laravel_version }}
     app_url: http://{{ app_name }}.local
     laravel_home: /home/vagrant/{{ app_name }}
     ssh_home: /home/vagrant/.ssh
