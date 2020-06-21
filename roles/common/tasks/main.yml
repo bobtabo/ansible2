@@ -2,8 +2,9 @@
 # 必須なインストールおよび設定
 #
 - name: yumリポジトリの登録
-  yum:
-    name: "['epel-release', 'http://rpms.famillecollet.com/enterprise/remi-release-7.rpm']"
+  yum_repository:
+    name: epel-release
+    baseurl: http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
 
 - name: SELinuxのDisable設定
   selinux:
