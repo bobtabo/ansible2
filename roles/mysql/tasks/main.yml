@@ -20,16 +20,19 @@
     state: present
     enablerepo: epel
 
-- name: MySQLのrootパスワード変更
-  mysql_user:
-    name: 'root'
-    host: "{{ item }}"
-    password: "{{ db_password_root }}"
-  with_items:
-    - 'localhost'
+- name: .my.cnfの配置
   template:
     src: 'templates/my.cnf.j2'
     dest: '/root/.my.cnf'
+    owner: root
+    group: root
+
+- name: MySQLの初期パスワード取得
+  shell: cat /var/log/mysqld.log | grep "temporary password" | awk '{print $11}'
+  register: mysql_default_password
+
+- name: MySQLのrootパスワード変更
+  shell: mysql -u root -p'{{ mysql_default_password.stdout }}' --connect-expired-password -e "set password for root@'localhost'=password('{{ db_password_root }}');"
 
 - name: DB作成
   mysql_db:
