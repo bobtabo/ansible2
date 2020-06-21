@@ -4,7 +4,7 @@
 - name: PHPをインストール
   yum:
     name: "{{ item }}"
-    enablerepo: "[remi,remi-php71]"
+    enablerepo: remi | remi-php71
     state: installed
   with_items:
     - 'php'
