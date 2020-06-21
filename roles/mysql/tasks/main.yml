@@ -6,7 +6,12 @@
 
 - name: MySQLをインストール
   yum:
-    enablerepo: "['mysql57-community', 'mysql-community-server']"
+    name: "{{ item }}"
+    state: present
+    with_items:
+      - yum-utils
+      - MySQL-python
+      - mysql-community-server
 
 - name: MySQLを起動
   service:
