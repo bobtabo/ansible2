@@ -4,6 +4,7 @@
 - name: yumリポジトリの登録
   yum_repository:
     name: epel-release
+    description: "epel-release"
     baseurl: http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
 
 - name: SELinuxのDisable設定
