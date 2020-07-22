@@ -1,8 +1,11 @@
 #
 # 必須なインストールおよび設定
 #
-- name: yumリポジトリの登録
+- name: EPELリポジトリの登録
   shell: yum -y install epel-release
+
+- name: Remiリポジトリの登録
+  shell: yum -y install http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
 
 - name: yumパッケージ更新
   shell: yum -y update

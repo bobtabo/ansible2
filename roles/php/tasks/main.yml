@@ -4,6 +4,7 @@
 - name: PHPをインストール
   yum:
     name: php, php-devel, php-mbstring, php-pdo, php-gd, php-xml, php-mcrypt, php-mysqlnd, php-fpm, php-pecl-xdebug, php-pecl-zip, php-bcmath
+    enablerepo: remi,remi-php71
     state: installed
 
 - name: PHP-FPM自動起動
