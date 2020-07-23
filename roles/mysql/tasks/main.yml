@@ -35,20 +35,25 @@
 - name: MySQLのrootパスワード変更
   shell: mysql -u root -p'{{ mysql_default_password.stdout }}' --connect-expired-password -e "set password for root@'localhost'=password('{{ db_password_root }}');"
 
+- name: MySQL再起動
+  service:
+    name: mysqld
+    state: restarted
+
 - name: DB作成
   mysql_db:
-    name: ”{{ db_name }}”
-    login_password: "{{ db_password_root }}"
+    name: '{{ db_name }}'
+    login_password: '{{ db_password_root }}'
     state: present
 
 - name: ユーザー作成
   mysql_user:
-    name: ”{{ db_user }}”
-    login_password: "{{ db_password_root }}"
-    password: ”{{ db_password }}”
+    name: '{{ db_user }}'
+    login_password: '{{ db_password_root }}'
+    password: '{{ db_password }}'
     priv: '*.*:ALL'
     state: present
-    host: "{{ item }}"
+    host: '{{ item }}'
   with_items:
     - '%'
     - 'localhost'
